@@ -90,6 +90,7 @@
   .card.short::before  { background: linear-gradient(90deg, var(--accent), #ff7b00); }
   .card.detail::before { background: linear-gradient(90deg, var(--blue), var(--green)); }
   .card.size::before   { background: linear-gradient(90deg, #a259ff, #56a6ff); }
+  .card.story::before  { background: linear-gradient(90deg, #f0ae4d, #d64343); }
 
   .card:hover {
     transform: translateY(-6px);
@@ -113,6 +114,7 @@
   .card.short h2  { color: #ff6b4a; }
   .card.detail h2  { color: var(--blue); }
   .card.size h2    { color: #c084fc; }
+  .card.story h2   { color: #f0ae4d; }
 
   .card p {
     font-size: 15px;
@@ -147,6 +149,11 @@
 
   .card.size .card-btn {
     background: linear-gradient(135deg, #a259ff, #56a6ff);
+    color: #fff;
+  }
+
+  .card.story .card-btn {
+    background: linear-gradient(135deg, #f0ae4d, #d64343);
     color: #fff;
   }
 
@@ -231,6 +238,23 @@
         href="Detailed/index.html"
       >
         View Detail Overview →
+      </a>
+    </div>
+
+    <div class="card story">
+      <span class="badge">Visual Story</span>
+      <div class="card-icon">🎬</div>
+      <h2>Story Cards</h2>
+      <p>
+        Story-driven visual cards for key scenes and environment beats. Open this
+        page to review the current story board and preview the Story images in a
+        larger viewer.
+      </p>
+      <a
+        class="card-btn"
+        href="DCE_Role_Base/DCE_Overview_Index.html"
+      >
+        Open Story Cards →
       </a>
     </div>
 

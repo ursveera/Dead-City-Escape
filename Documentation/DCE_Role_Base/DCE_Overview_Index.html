@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dead City Escape - Overview Index</title>
+<style>
+  :root {
+    --bg: #0a0d12;
+    --panel: #141a22;
+    --panel-2: #1b2430;
+    --line: #2c394a;
+    --text: #eef4ff;
+    --muted: #a5b3c5;
+    --accent: #de5748;
+    --accent-2: #f0ae4d;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, "Segoe UI", sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at top, rgba(222,87,72,.22), transparent 34%),
+      linear-gradient(180deg, #080b10, #111821 50%, #0b1016 100%);
+  }
+
+  .page-shell {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 28px 80px;
+  }
+
+  .hero {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    color: var(--accent-2);
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 6vw, 62px);
+    line-height: 1;
+  }
+
+  .hero p {
+    margin: 0;
+    max-width: 760px;
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
+    justify-content: start;
+    gap: 22px;
+  }
+
+  .story-card {
+    display: grid;
+    gap: 12px;
+    width: min(100%, 320px);
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(20,26,34,.98), rgba(12,16,22,.95));
+    box-shadow: 0 24px 48px rgba(0,0,0,.32);
+  }
+
+  .story-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 4.6;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #0d1218;
+  }
+
+  .story-meta {
+    display: grid;
+    gap: 8px;
+  }
+
+  .story-meta h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .story-meta p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .story-button {
+    appearance: none;
+    border: 1px solid rgba(222,87,72,.4);
+    background: linear-gradient(180deg, rgba(222,87,72,.22), rgba(222,87,72,.08));
+    color: var(--text);
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .story-button:hover {
+    background: linear-gradient(180deg, rgba(222,87,72,.28), rgba(222,87,72,.12));
+    border-color: rgba(222,87,72,.65);
+  }
+
+  .story-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .story-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
+    border: 1px solid rgba(240,174,77,.45);
+    background: linear-gradient(180deg, rgba(240,174,77,.2), rgba(240,174,77,.08));
+    color: var(--text);
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .story-link:hover {
+    border-color: rgba(240,174,77,.7);
+    background: linear-gradient(180deg, rgba(240,174,77,.28), rgba(240,174,77,.12));
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(6, 8, 12, .9);
+    backdrop-filter: blur(8px);
+  }
+
+  .lightbox.is-visible {
+    display: flex;
+  }
+
+  .lightbox-panel {
+    width: min(94vw, 1280px);
+    height: min(92vh, 920px);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #121923, #0b1017);
+    border: 1px solid rgba(255,255,255,.12);
+  }
+
+  .lightbox-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .lightbox-title {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .lightbox-close {
+    appearance: none;
+    border: 1px solid rgba(255,255,255,.14);
+    background: var(--panel-2);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .lightbox-stage {
+    min-height: 0;
+    overflow: auto;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: #0b1017;
+    padding: 14px;
+  }
+
+  .lightbox-image {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 14px;
+    box-shadow: 0 18px 36px rgba(0,0,0,.35);
+  }
+
+  .lightbox-caption {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 720px) {
+    .page-shell {
+      padding: 28px 16px 56px;
+    }
+
+    .hero p {
+      font-size: 16px;
+    }
+
+    .card-grid {
+      justify-content: stretch;
+    }
+
+    .story-card {
+      width: 100%;
+    }
+
+    .story-actions {
+      grid-template-columns: 1fr;
+    }
+
+    .lightbox-panel {
+      width: 100%;
+      height: min(94vh, 94vh);
+      padding: 12px;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="eyebrow">Dead City Escape</div>
+      <h1>DCE Overview Index</h1>
+      <p>Story cards and overview visuals for Dead City Escape. The page stays in the main project folder while using the story images stored under the Story image directory.</p>
+    </section>
+
+    <section class="card-grid">
+      <article class="story-card">
+        <img class="story-thumb" src="images/Story/Start Alley.png" alt="Start Alley story card" />
+        <div class="story-meta">
+          <h2>Start Alley</h2>
+          <p>Opening visual card for the first playable segment. Use this as the baseline mood board for the player's first moments in Dead City Escape.</p>
+        </div>
+        <div class="story-actions">
+          <button class="story-button" type="button" data-image="images/Story/Start Alley.png" data-title="Start Alley Story Card" data-caption="Opening story card for the Start Alley sequence.">Open Card</button>
+          <a class="story-link" href="file:///C:/Users/Ursve/Downloads/dead_city_escape_start_alley_40_min_2player_design.html">Open Story</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+      <div class="lightbox-topbar">
+        <h2 class="lightbox-title" id="lightboxTitle">Story Card</h2>
+        <button class="lightbox-close" id="lightboxClose" type="button">Close</button>
+      </div>
+      <div class="lightbox-stage">
+        <img class="lightbox-image" id="lightboxImage" alt="Story card preview" />
+      </div>
+      <p class="lightbox-caption" id="lightboxCaption">Story card preview.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.story-button');
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImage = document.getElementById('lightboxImage');
+      var lightboxTitle = document.getElementById('lightboxTitle');
+      var lightboxCaption = document.getElementById('lightboxCaption');
+      var lightboxClose = document.getElementById('lightboxClose');
+
+      if (!buttons.length || !lightbox || !lightboxImage || !lightboxTitle || !lightboxCaption || !lightboxClose) {
+        return;
+      }
+
+      function openLightbox(button) {
+        lightboxImage.src = button.getAttribute('data-image');
+        lightboxImage.alt = button.getAttribute('data-title') || 'Story card preview';
+        lightboxTitle.textContent = button.getAttribute('data-title') || 'Story Card';
+        lightboxCaption.textContent = button.getAttribute('data-caption') || 'Story card preview.';
+        lightbox.classList.add('is-visible');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('is-visible');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          openLightbox(button);
+        });
+      });
+
+      lightboxClose.addEventListener('click', closeLightbox);
+
+      lightbox.addEventListener('click', function (event) {
+        if (event.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (lightbox.classList.contains('is-visible') && event.key === 'Escape') {
+          closeLightbox();
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
