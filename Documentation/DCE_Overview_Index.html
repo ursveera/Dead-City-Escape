@@ -61,7 +61,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 36px;
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
   }
 
@@ -87,8 +87,9 @@
     border-radius: 18px 18px 0 0;
   }
 
-  .card.short::before { background: linear-gradient(90deg, var(--accent), #ff7b00); }
+  .card.short::before  { background: linear-gradient(90deg, var(--accent), #ff7b00); }
   .card.detail::before { background: linear-gradient(90deg, var(--blue), var(--green)); }
+  .card.size::before   { background: linear-gradient(90deg, #a259ff, #56a6ff); }
 
   .card:hover {
     transform: translateY(-6px);
@@ -109,8 +110,9 @@
     margin: 0;
   }
 
-  .card.short h2 { color: #ff6b4a; }
-  .card.detail h2 { color: var(--blue); }
+  .card.short h2  { color: #ff6b4a; }
+  .card.detail h2  { color: var(--blue); }
+  .card.size h2    { color: #c084fc; }
 
   .card p {
     font-size: 15px;
@@ -141,6 +143,11 @@
   .card.detail .card-btn {
     background: linear-gradient(135deg, var(--blue), var(--green));
     color: #08111a;
+  }
+
+  .card.size .card-btn {
+    background: linear-gradient(135deg, #a259ff, #56a6ff);
+    color: #fff;
   }
 
   .badge {
@@ -191,6 +198,24 @@
       </a>
     </div>
 
+    <!-- Size Guide Card -->
+    <div class="card size">
+      <span class="badge">Technical Reference</span>
+      <div class="card-icon">📐</div>
+      <h2>Size Guide</h2>
+      <p>
+        The master LOD &amp; game-size reference — polygon budgets, texture
+        resolutions, LOD thresholds, file-size targets, and optimisation rules
+        for every asset category in Dead City Escape.
+      </p>
+      <a
+        class="card-btn"
+        href="dead_city_escape_lod_and_game_size_master_guide.html"
+      >
+        View Size Guide →
+      </a>
+    </div>
+
     <!-- Detail Overview Card -->
     <div class="card detail">
       <span class="badge">Full Pack</span>
@@ -203,7 +228,7 @@
       </p>
       <a
         class="card-btn"
-        href="Detailed/index.html"
+        href="index.html"
       >
         View Detail Overview →
       </a>

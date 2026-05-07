@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dead City Escape — LOD Workflow and Game Size Master Guide</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #151b24;
+    --text: #eef4ff;
+    --muted: #aab5c5;
+    --line: #344155;
+    --accent: #d64343;
+    --green: #75dc93;
+    --orange: #f0a33a;
+    --blue: #56a6ff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, "Segoe UI", sans-serif;
+    background: linear-gradient(180deg, #090d12, #101720);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  header {
+    padding: 58px 7vw 40px;
+    background:
+      radial-gradient(circle at 75% 15%, rgba(214,67,67,.25), transparent 35%),
+      linear-gradient(135deg, #121923, #080b10);
+    border-bottom: 1px solid var(--line);
+  }
+
+  main {
+    max-width: 1180px;
+    margin: auto;
+    padding: 34px 5vw 80px;
+  }
+
+  h1 {
+    font-size: 42px;
+    margin: 0 0 10px;
+  }
+
+  h2 {
+    font-size: 28px;
+    margin: 42px 0 18px;
+    border-left: 6px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  h3 {
+    font-size: 22px;
+    margin: 26px 0 12px;
+  }
+
+  p { margin: 8px 0 14px; }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 20px;
+    max-width: 980px;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+
+  .badge {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: #eaf2ff;
+    font-size: 14px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel), #111720);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    margin: 18px 0;
+    box-shadow: 0 14px 38px rgba(0,0,0,.25);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    background: #111720;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  th, td {
+    border: 1px solid #303a4d;
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #222c3c;
+    color: #fff;
+  }
+
+  td { color: #e3ebf7; }
+
+  ul, ol { padding-left: 24px; }
+  li { margin: 6px 0; }
+
+  pre {
+    background: #080c12;
+    border: 1px solid #2e394c;
+    border-radius: 14px;
+    padding: 18px;
+    overflow-x: auto;
+    color: #dce8f6;
+    font-size: 15px;
+    white-space: pre-wrap;
+  }
+
+  .callout {
+    border-left: 5px solid var(--orange);
+    background: rgba(240,163,58,.09);
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin: 18px 0;
+  }
+
+  .success {
+    border-left-color: var(--green);
+    background: rgba(117,220,147,.09);
+  }
+
+  .danger {
+    border-left-color: var(--accent);
+    background: rgba(214,67,67,.09);
+  }
+
+  .toc a {
+    display: block;
+    color: #eaf2ff;
+    text-decoration: none;
+    padding: 7px 0;
+    border-bottom: 1px dashed rgba(255,255,255,.08);
+  }
+
+  .footer {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 40px;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  @media (max-width: 850px) {
+    h1 { font-size: 34px; }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Dead City Escape</h1>
+  <div class="subtitle">Master Guide for 3D Artist — LOD Workflow + PC and Mobile Game Size Planning. This document is for creating optimized, game-ready 3D assets for both PC and mobile versions.</div>
+  <div class="badge-row">
+    <span class="badge">For Sitrarasan</span>
+    <span class="badge">LOD Workflow</span>
+    <span class="badge">Game Size Guide</span>
+    <span class="badge">Blender</span>
+    <span class="badge">Maya</span>
+    <span class="badge">Unity</span>
+    <span class="badge">PC + Mobile</span>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <h2>Table of Contents</h2>
+  <div class="card toc">
+    <a href="#lod-purpose">1. LOD Guide Purpose</a>
+    <a href="#what-is-lod">2. What is LOD?</a>
+    <a href="#important-rule">3. Important LOD Rule</a>
+    <a href="#character-workflow">4. Professional Character Workflow</a>
+    <a href="#survivor-lods">5. Survivor LOD Targets</a>
+    <a href="#zombie-lods">6. Zombie LOD Targets</a>
+    <a href="#prop-lods">7. Props and Environment LODs</a>
+    <a href="#blender-workflow">8. Blender Workflow</a>
+    <a href="#maya-workflow">9. Maya Workflow</a>
+    <a href="#topology-rule">10. Character Topology Rule</a>
+    <a href="#unity-lod">11. Unity LOD System</a>
+    <a href="#export-naming">12. Export Naming Rules</a>
+    <a href="#pc-mobile-workflow">13. PC and Mobile Asset Workflow</a>
+    <a href="#mobile-optimization">14. Mobile Optimization</a>
+    <a href="#lod-summary">15. Final LOD Instruction</a>
+    <a href="#size-purpose">16. Game Size Guide Purpose</a>
+    <a href="#size-targets">17. Recommended Final Size Target</a>
+    <a href="#simple-answer">18. Simple Answer</a>
+    <a href="#size-by-area">19. Approximate Size by Game Area</a>
+    <a href="#why-different">20. Why PC and Mobile Need Different Asset Versions</a>
+    <a href="#texture-rules">21. Texture Size Rules</a>
+    <a href="#triangle-budgets">22. Polygon / Triangle Budget</a>
+    <a href="#asset-strategy">23. PC vs Mobile Asset Creation Strategy</a>
+    <a href="#what-makes-size-large">24. What Makes Game Size Large?</a>
+    <a href="#artist-rules">25. Optimization Rules for 3D Artist</a>
+    <a href="#compression">26. Suggested Unity Compression Settings</a>
+    <a href="#build-plan">27. Recommended Build Plan</a>
+    <a href="#final-recommendation">28. Final Recommendation</a>
+  </div>
+</section>
+
+<section id="lod-purpose">
+  <h2>1. LOD Guide Purpose</h2>
+  <div class="card">
+    <p>This section explains how LODs, also called <strong>Level of Detail</strong>, should be created for <strong>Dead City Escape</strong>.</p>
+    <p>The goal is to keep the game looking good while also keeping performance strong for both <strong>PC</strong> and <strong>mobile</strong>.</p>
+  </div>
+</section>
+
+<section id="what-is-lod">
+  <h2>2. What is LOD?</h2>
+  <div class="card">
+    <p>LOD means different versions of the same model are shown depending on camera distance.</p>
+    <table>
+      <tr>
+        <th>Distance</th>
+        <th>Model Used</th>
+        <th>Detail Level</th>
+      </tr>
+      <tr>
+        <td>Near camera</td>
+        <td>LOD0</td>
+        <td>Highest detail</td>
+      </tr>
+      <tr>
+        <td>Medium distance</td>
+        <td>LOD1</td>
+        <td>Medium detail</td>
+      </tr>
+      <tr>
+        <td>Far distance</td>
+        <td>LOD2</td>
+        <td>Low detail / optimized distance mesh</td>
+      </tr>
+    </table>
+    <p>LOD improves FPS, memory usage, multiplayer stability, and mobile performance.</p>
+  </div>
+</section>
+
+<section id="important-rule">
+  <h2>3. Important LOD Rule</h2>
+  <div class="card">
+    <p>Do <strong>not</strong> redraw the full model separately for every LOD.</p>
+<pre>Create one main model first
+↓
+Duplicate model
+↓
+Reduce polygons
+↓
+Create LOD1
+↓
+Reduce more
+↓
+Create LOD2</pre>
+    <div class="callout success">
+      <strong>Correct method:</strong> Create LOD0 first, then duplicate and simplify it to make LOD1 and LOD2.
+    </div>
+  </div>
+</section>
+
+<section id="character-workflow">
+  <h2>4. Professional Character Workflow</h2>
+  <div class="card">
+    <h3>Step 1 — High-Quality Source Model</h3>
+    <p>First create a high-detail source model. This can include sculpt details, folds, wrinkles, straps, surface damage, and realistic details.</p>
+    <p>This source model is usually <strong>not used directly inside Unity</strong>. It is used for baking details into the game-ready mesh.</p>
+<pre>High-quality source model
+Possible polygon count: 1 million+ polygons</pre>
+
+    <h3>Step 2 — Game-Ready PC Mesh / LOD0</h3>
+    <p>Create the optimized PC game mesh from the source model.</p>
+<pre>LOD0 target for main survivor:
+60k–90k triangles</pre>
+    <p>LOD0 should contain full silhouette quality, facial detail, clothing folds, equipment details, straps, gloves, holsters, boots, and proper animation topology.</p>
+
+    <h3>Step 3 — Create LOD1</h3>
+    <p>Duplicate LOD0 and reduce the polygon count.</p>
+<pre>LOD1 target for main survivor:
+30k–45k triangles</pre>
+    <p>Reduce small folds, tiny bevels, hidden faces, extra loops, and very small accessories.</p>
+
+    <h3>Step 4 — Create LOD2</h3>
+    <p>Duplicate LOD1 or LOD0 and reduce polygons further.</p>
+<pre>LOD2 target for main survivor:
+10k–20k triangles</pre>
+    <p>Remove tiny geometry details, unnecessary loops, complex curves, extra pockets, small straps, and detailed wrinkles.</p>
+  </div>
+</section>
+
+<section id="survivor-lods">
+  <h2>5. Survivor LOD Targets</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>LOD</th>
+        <th>Triangle Target</th>
+        <th>Usage</th>
+      </tr>
+      <tr>
+        <td>LOD0</td>
+        <td>60k–90k tris</td>
+        <td>Close camera / highest quality PC mesh</td>
+      </tr>
+      <tr>
+        <td>LOD1</td>
+        <td>30k–45k tris</td>
+        <td>Medium distance</td>
+      </tr>
+      <tr>
+        <td>LOD2</td>
+        <td>10k–20k tris</td>
+        <td>Far distance</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section id="zombie-lods">
+  <h2>6. Zombie LOD Targets</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>LOD</th>
+        <th>Triangle Target</th>
+        <th>Usage</th>
+      </tr>
+      <tr>
+        <td>LOD0</td>
+        <td>25k–50k tris</td>
+        <td>Close zombie / detailed enemy mesh</td>
+      </tr>
+      <tr>
+        <td>LOD1</td>
+        <td>12k–25k tris</td>
+        <td>Medium distance zombie</td>
+      </tr>
+      <tr>
+        <td>LOD2</td>
+        <td>5k–10k tris</td>
+        <td>Far distance zombie</td>
+      </tr>
+    </table>
+    <div class="callout">Zombies appear many times on screen, so optimization is very important.</div>
+  </div>
+</section>
+
+<section id="prop-lods">
+  <h2>7. Props and Environment LODs</h2>
+  <div class="card">
+    <h3>Small Props</h3>
+    <p>Examples: trash bags, ammo boxes, signs, small debris. Usually these need only LOD0 or one simple LOD1.</p>
+
+    <h3>Medium Props</h3>
+    <p>Examples: dumpster, barricade, doors, hospital beds, generator props.</p>
+    <table>
+      <tr><th>LOD</th><th>Usage</th></tr>
+      <tr><td>LOD0</td><td>Close view</td></tr>
+      <tr><td>LOD1</td><td>Medium distance</td></tr>
+      <tr><td>LOD2</td><td>Optional if object is large or repeated</td></tr>
+    </table>
+
+    <h3>Large Hero Assets</h3>
+    <p>Examples: burned police car, helicopter wreck, final gate, military truck, generator.</p>
+    <table>
+      <tr><th>LOD</th><th>Usage</th></tr>
+      <tr><td>LOD0</td><td>Close</td></tr>
+      <tr><td>LOD1</td><td>Medium</td></tr>
+      <tr><td>LOD2</td><td>Far</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="blender-workflow">
+  <h2>8. Blender Workflow</h2>
+  <div class="card">
+    <h3>Manual Method — Recommended</h3>
+<pre>1. Create LOD0
+2. Duplicate object
+3. Rename duplicate as LOD1
+4. Reduce polygons manually or using modifiers
+5. Duplicate again
+6. Rename as LOD2
+7. Reduce polygons further
+8. Check silhouette
+9. Export to Unity</pre>
+
+    <h3>Decimate Modifier Method</h3>
+    <p>In Blender, use:</p>
+<pre>Modifier
+→ Decimate</pre>
+
+    <table>
+      <tr><th>LOD</th><th>Example Decimate Ratio</th></tr>
+      <tr><td>LOD1</td><td>0.6</td></tr>
+      <tr><td>LOD2</td><td>0.3</td></tr>
+      <tr><td>LOD3</td><td>0.1</td></tr>
+    </table>
+
+    <div class="callout">Decimate works well for props, vehicles, and environment assets. For characters, manual cleanup is better.</div>
+  </div>
+</section>
+
+<section id="maya-workflow">
+  <h2>9. Maya Workflow</h2>
+  <div class="card">
+    <p>In Maya, use:</p>
+<pre>Mesh
+→ Reduce</pre>
+    <p>Recommended workflow:</p>
+<pre>Duplicate mesh
+↓
+Reduce polygon count
+↓
+Cleanup topology
+↓
+Optimize silhouette
+↓
+Export LOD mesh</pre>
+  </div>
+</section>
+
+<section id="topology-rule">
+  <h2>10. Character Topology Rule</h2>
+  <div class="card">
+    <p>For characters, do not destroy topology around animation areas.</p>
+    <ul>
+      <li>Shoulders</li>
+      <li>Elbows</li>
+      <li>Knees</li>
+      <li>Hips</li>
+      <li>Neck</li>
+      <li>Hands</li>
+      <li>Face</li>
+    </ul>
+    <div class="callout danger">Bad topology causes broken animations, ugly deformation, shadow problems, and skinning issues.</div>
+  </div>
+</section>
+
+<section id="unity-lod">
+  <h2>11. Unity LOD System</h2>
+  <div class="card">
+    <p>Inside Unity, use the:</p>
+<pre>LOD Group Component</pre>
+    <p>Unity automatically switches models based on camera distance.</p>
+    <table>
+      <tr><th>Distance</th><th>Unity Uses</th></tr>
+      <tr><td>Near</td><td>LOD0</td></tr>
+      <tr><td>Medium</td><td>LOD1</td></tr>
+      <tr><td>Far</td><td>LOD2</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="export-naming">
+  <h2>12. Export Naming Rules</h2>
+  <div class="card">
+    <p>Recommended naming:</p>
+<pre>SK_Survivor_01_LOD0.fbx
+SK_Survivor_01_LOD1.fbx
+SK_Survivor_01_LOD2.fbx</pre>
+
+    <p>Examples:</p>
+<pre>SK_ZombieWalker_01_LOD0
+SK_ZombieWalker_01_LOD1
+SK_ZombieWalker_01_LOD2
+
+SM_Dumpster_01_LOD0
+SM_Dumpster_01_LOD1
+SM_Dumpster_01_LOD2
+
+SM_PoliceCar_Burned_01_LOD0
+SM_PoliceCar_Burned_01_LOD1
+SM_PoliceCar_Burned_01_LOD2</pre>
+  </div>
+</section>
+
+<section id="pc-mobile-workflow">
+  <h2>13. PC and Mobile Asset Workflow</h2>
+  <div class="card">
+    <p>Do not create separate PC and mobile models from the beginning.</p>
+<pre>High-quality source model
+↓
+PC game-ready optimized mesh
+↓
+Create LODs
+↓
+Create mobile optimized version later</pre>
+    <div class="callout success">Create PC-quality source first. Later reduce it for mobile.</div>
+  </div>
+</section>
+
+<section id="mobile-optimization">
+  <h2>14. Mobile Optimization</h2>
+  <div class="card">
+    <p>For mobile versions, reduce:</p>
+    <ul>
+      <li>Polygon count</li>
+      <li>Texture size</li>
+      <li>Shader complexity</li>
+      <li>Material count</li>
+      <li>Transparency usage</li>
+      <li>Realtime lighting usage</li>
+    </ul>
+    <p>Recommended mobile survivor target:</p>
+<pre>20k–45k triangles</pre>
+  </div>
+</section>
+
+<section id="lod-summary">
+  <h2>15. Final LOD Instruction</h2>
+  <div class="card">
+    <ol>
+      <li>Create high-quality source model first.</li>
+      <li>Create game-ready PC mesh.</li>
+      <li>Create LOD1 and LOD2 from the same mesh.</li>
+      <li>Later create mobile optimized version.</li>
+      <li>Do not redraw the full character separately for every LOD.</li>
+    </ol>
+    <div class="callout success">This is the correct professional workflow for real game production.</div>
+  </div>
+</section>
+
+<section id="size-purpose">
+  <h2>16. Game Size Guide Purpose</h2>
+  <div class="card">
+    <p>This section explains the approximate game size target for <strong>Dead City Escape</strong> on <strong>PC</strong> and <strong>mobile</strong>.</p>
+    <p>The purpose is to guide 3D asset creation, texture resolution, optimization, LODs, audio usage, and Unity build size planning.</p>
+    <p>This is not the exact final size. The exact size will depend on final textures, audio, animations, lighting data, video files, and Unity compression settings.</p>
+  </div>
+</section>
+
+<section id="size-targets">
+  <h2>17. Recommended Final Size Target</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Build Type</th>
+        <th>Recommended Target Size</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>PC Demo / Vertical Slice</td>
+        <td>2 GB – 5 GB</td>
+        <td>Good target for the first 10-minute playable demo with Start Alley, Main Street, characters, zombies, and basic gameplay.</td>
+      </tr>
+      <tr>
+        <td>Full PC Game</td>
+        <td>10 GB – 20 GB</td>
+        <td>Recommended target for a good-quality indie/AA style PC game with all 7 areas and realistic assets.</td>
+      </tr>
+      <tr>
+        <td>High-Quality PC Version</td>
+        <td>20 GB – 40 GB</td>
+        <td>Possible if using many 4K textures, large audio files, many animations, large maps, and high-quality lighting data.</td>
+      </tr>
+      <tr>
+        <td>Mobile Demo</td>
+        <td>800 MB – 1.5 GB</td>
+        <td>Recommended target for mobile prototype/demo. Keep textures and audio compressed.</td>
+      </tr>
+      <tr>
+        <td>Full Mobile Game</td>
+        <td>2 GB – 4 GB</td>
+        <td>Recommended upper target. Mobile must use reduced texture sizes, simplified materials, and lighter assets.</td>
+      </tr>
+    </table>
+    <div class="callout success">
+      <strong>Best target for this project:</strong><br>
+      PC full game: <strong>10 GB – 20 GB</strong><br>
+      Mobile full game: <strong>2 GB – 4 GB max</strong>
+    </div>
+  </div>
+</section>
+
+<section id="simple-answer">
+  <h2>18. Simple Answer</h2>
+  <div class="card">
+<pre>First playable demo:
+PC target: below 5 GB
+Mobile target: below 1.5 GB
+
+Full game:
+PC target: 10 GB – 20 GB
+Mobile target: 2 GB – 4 GB</pre>
+  </div>
+</section>
+
+<section id="size-by-area">
+  <h2>19. Approximate Size by Game Area</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Game Area / Asset Group</th>
+        <th>PC Estimated Size</th>
+        <th>Mobile Estimated Size</th>
+        <th>Notes</th>
+      </tr>
+      <tr><td>Start Alley</td><td>300 MB – 800 MB</td><td>100 MB – 300 MB</td><td>Small but detailed area with wet surfaces, brick walls, dumpsters, pipes, and alley props.</td></tr>
+      <tr><td>Main Street</td><td>800 MB – 2 GB</td><td>300 MB – 700 MB</td><td>Large combat area with roads, shopfronts, vehicles, barricades, smoke, fire, and debris.</td></tr>
+      <tr><td>Gun Shop</td><td>300 MB – 700 MB</td><td>100 MB – 300 MB</td><td>Indoor loot area with shelves, display counters, glass, posters, lights, and props.</td></tr>
+      <tr><td>Hospital</td><td>800 MB – 2 GB</td><td>300 MB – 700 MB</td><td>Many props: beds, monitors, carts, curtains, walls, doors, blood decals, floor tiles.</td></tr>
+      <tr><td>Parking Garage</td><td>600 MB – 1.5 GB</td><td>200 MB – 500 MB</td><td>Concrete floors, pillars, parked cars, ramps, lights, pipes, cones, signs.</td></tr>
+      <tr><td>Generator Room</td><td>400 MB – 1 GB</td><td>150 MB – 400 MB</td><td>Industrial room with generator hero asset, control panels, pipes, cables, lights, grates.</td></tr>
+      <tr><td>Final Gate Area</td><td>800 MB – 2 GB</td><td>300 MB – 700 MB</td><td>Military gate, watch towers, floodlights, barricades, sandbags, helicopter wreck, fences.</td></tr>
+      <tr><td>Characters and Zombies</td><td>1 GB – 4 GB</td><td>300 MB – 1 GB</td><td>Survivors, zombies, LODs, materials, textures, blend shapes, rigged meshes.</td></tr>
+      <tr><td>Weapons and Props</td><td>500 MB – 2 GB</td><td>150 MB – 700 MB</td><td>Fictional sidearms, shotgun, rifle, grenades, pickups, crates, supplies, interactive objects.</td></tr>
+      <tr><td>Audio, UI, VFX, Animations</td><td>500 MB – 3 GB</td><td>300 MB – 1 GB</td><td>Audio can become very large if not compressed properly.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="why-different">
+  <h2>20. Why PC and Mobile Need Different Asset Versions</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>PC</th>
+        <th>Mobile</th>
+      </tr>
+      <tr><td>Higher texture resolution</td><td>Lower texture resolution</td></tr>
+      <tr><td>More polygons</td><td>Fewer polygons</td></tr>
+      <tr><td>More zombies and props on screen</td><td>Fewer zombies and props on screen</td></tr>
+      <tr><td>Better shadows and lighting</td><td>Baked or simplified lighting</td></tr>
+      <tr><td>More VFX and detailed materials</td><td>Simplified VFX and materials</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="texture-rules">
+  <h2>21. Texture Size Rules</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Asset Type</th>
+        <th>PC Texture Target</th>
+        <th>Mobile Texture Target</th>
+        <th>Notes</th>
+      </tr>
+      <tr><td>Main Survivor</td><td>2K – 4K</td><td>1K – 2K</td><td>Use 4K only for hero close-up quality. 2K is enough for prototype.</td></tr>
+      <tr><td>Zombie</td><td>2K – 4K</td><td>1K</td><td>Use material variations instead of many unique full textures.</td></tr>
+      <tr><td>Hero Prop</td><td>2K – 4K</td><td>1K – 2K</td><td>Generator, gate, vehicle, helicopter wreck.</td></tr>
+      <tr><td>Modular Environment</td><td>1K – 2K tileable</td><td>512 – 1K tileable</td><td>Use trim sheets and tileable materials.</td></tr>
+      <tr><td>Small Props</td><td>512 – 1K</td><td>256 – 512</td><td>Use texture atlases where possible.</td></tr>
+      <tr><td>UI</td><td>1K – 2K atlas</td><td>512 – 1K atlas</td><td>Keep UI crisp but not over-sized.</td></tr>
+    </table>
+    <div class="callout"><strong>Rule:</strong> Do not use 4K textures everywhere. Use 4K only for important hero assets and main characters.</div>
+  </div>
+</section>
+
+<section id="triangle-budgets">
+  <h2>22. Polygon / Triangle Budget</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Asset Type</th>
+        <th>PC Target</th>
+        <th>Mobile Target</th>
+        <th>Notes</th>
+      </tr>
+      <tr><td>Main Survivor</td><td>60k – 90k tris LOD0</td><td>20k – 45k tris LOD0</td><td>Use LODs for distance.</td></tr>
+      <tr><td>Zombie</td><td>25k – 50k tris LOD0</td><td>10k – 25k tris LOD0</td><td>Zombies appear many times, so optimization is important.</td></tr>
+      <tr><td>Vehicle</td><td>20k – 40k tris LOD0</td><td>8k – 20k tris LOD0</td><td>Interior only if visible.</td></tr>
+      <tr><td>Hero Prop</td><td>15k – 40k tris LOD0</td><td>5k – 20k tris LOD0</td><td>Use normal maps for detail.</td></tr>
+      <tr><td>Small Prop</td><td>500 – 5k tris</td><td>200 – 2k tris</td><td>Repeated props need strong optimization.</td></tr>
+      <tr><td>Modular Wall / Floor</td><td>500 – 4k tris</td><td>200 – 1.5k tris</td><td>Use tileable textures instead of geometry detail.</td></tr>
+    </table>
+    <div class="callout success"><strong>Important wording:</strong> Use “game-ready optimized mesh” instead of “low-poly” when talking to the artist.</div>
+  </div>
+</section>
+
+<section id="asset-strategy">
+  <h2>23. PC vs Mobile Asset Creation Strategy</h2>
+  <div class="card">
+<pre>Create PC-quality source asset first
+↓
+Make optimized game-ready PC version
+↓
+Create LODs
+↓
+Create mobile version by reducing:
+  - texture size
+  - triangle count
+  - material complexity
+  - shader complexity
+  - VFX complexity
+↓
+Test inside Unity on PC and mobile</pre>
+    <p><strong>Instruction for Sitrarasan:</strong></p>
+<pre>Create assets in high-quality PC style first,
+but keep them modular and optimized.
+
+Do not create extremely heavy meshes.
+
+For mobile, we will reduce texture size,
+LOD quality, material complexity,
+and some prop density later.</pre>
+  </div>
+</section>
+
+<section id="what-makes-size-large">
+  <h2>24. What Makes Game Size Large?</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Why It Increases Size</th>
+        <th>Control Method</th>
+      </tr>
+      <tr><td>4K Textures</td><td>Very large when used for many props and environments.</td><td>Use 4K only for hero assets. Use 1K/2K for most assets.</td></tr>
+      <tr><td>Unique Materials</td><td>Too many unique textures increase build size.</td><td>Use shared tileable materials and trim sheets.</td></tr>
+      <tr><td>Audio</td><td>Music and voice files can become very large.</td><td>Compress audio and avoid unnecessary long uncompressed tracks.</td></tr>
+      <tr><td>Animations</td><td>Many unique animations increase size.</td><td>Reuse animation sets when possible.</td></tr>
+      <tr><td>Video Cutscenes</td><td>High-resolution video takes a lot of storage.</td><td>Use real-time cutscenes where possible.</td></tr>
+      <tr><td>Lighting Data</td><td>Baked lighting can increase size.</td><td>Use sensible lightmap resolution and area-based loading.</td></tr>
+      <tr><td>Duplicate Assets</td><td>Same asset saved multiple times wastes space.</td><td>Use prefabs, shared materials, and clean project folders.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="artist-rules">
+  <h2>25. Optimization Rules for 3D Artist</h2>
+  <div class="card">
+    <ul>
+      <li>Create modular assets instead of one huge environment mesh.</li>
+      <li>Use shared materials whenever possible.</li>
+      <li>Use tileable textures for roads, walls, floors, concrete, brick, metal, and hospital tiles.</li>
+      <li>Use trim sheets for repeated edges, panels, signs, doors, and wall details.</li>
+      <li>Use LODs for vehicles, zombies, hero props, and repeated large props.</li>
+      <li>Use simple collision meshes.</li>
+      <li>Do not add geometry detail where a normal map can show the same detail.</li>
+      <li>Do not export hidden objects, cameras, lights, or unused meshes.</li>
+      <li>Keep pivot and scale correct before export.</li>
+      <li>Always test asset scale against a 1.8m human reference.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="compression">
+  <h2>26. Suggested Unity Compression Settings</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Asset</th>
+        <th>PC</th>
+        <th>Mobile</th>
+      </tr>
+      <tr><td>Textures</td><td>Use platform compression, 2K/4K where needed.</td><td>Use ASTC/ETC2 where suitable, reduce max texture size.</td></tr>
+      <tr><td>Audio</td><td>Vorbis compressed for music and ambience.</td><td>Heavier compression for music and ambience.</td></tr>
+      <tr><td>Meshes</td><td>Use mesh compression carefully after testing normals.</td><td>Use stronger mesh compression for repeated props.</td></tr>
+      <tr><td>Lighting</td><td>Medium/high lightmap quality for PC.</td><td>Lower lightmap size, more baked lighting, fewer realtime lights.</td></tr>
+      <tr><td>VFX</td><td>More particles and decals allowed.</td><td>Fewer particles, cheaper shaders, smaller textures.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="build-plan">
+  <h2>27. Recommended Build Plan</h2>
+  <div class="card">
+    <h3>Stage 1 — PC Prototype First</h3>
+    <ul>
+      <li>Build the first demo for PC first.</li>
+      <li>Use placeholder/blockout assets first.</li>
+      <li>Integrate first optimized assets.</li>
+      <li>Keep PC demo below 5 GB.</li>
+    </ul>
+
+    <h3>Stage 2 — Mobile Test Later</h3>
+    <ul>
+      <li>After PC demo works, create mobile test build.</li>
+      <li>Reduce textures to mobile sizes.</li>
+      <li>Reduce zombies and prop density.</li>
+      <li>Use baked lighting and fewer realtime effects.</li>
+      <li>Keep mobile demo below 1.5 GB.</li>
+    </ul>
+
+    <h3>Stage 3 — Full Production</h3>
+    <ul>
+      <li>Build areas one by one.</li>
+      <li>Use addressables or area-based loading later if needed.</li>
+      <li>Keep PC full game around 10–20 GB.</li>
+      <li>Keep mobile full game around 2–4 GB.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="final-recommendation">
+  <h2>28. Final Recommendation</h2>
+  <div class="card">
+    <p>For <strong>Dead City Escape</strong>, do not try to create PC and mobile final versions at the same time from day one.</p>
+    <p>First, create the PC-quality vertical slice. After gameplay works, create reduced mobile versions of the same assets.</p>
+    <p>This gives better quality control and avoids wasting time creating mobile assets before the gameplay direction is confirmed.</p>
+    <div class="callout success">
+      <strong>Final target:</strong><br>
+      First PC demo: below <strong>5 GB</strong><br>
+      First mobile demo: below <strong>1.5 GB</strong><br>
+      Full PC game: <strong>10 GB – 20 GB</strong><br>
+      Full mobile game: <strong>2 GB – 4 GB</strong>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  Dead City Escape — Master Guide for 3D Artist (LOD Workflow + Game Size Guide)
+</div>
+
+</main>
+</body>
+</html>
