@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dead City Escape — Work Responsibility Document</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #151b24;
+    --panel2: #202838;
+    --text: #eef4ff;
+    --muted: #aab5c5;
+    --line: #344155;
+    --accent: #d64343;
+    --blue: #56a6ff;
+    --green: #75dc93;
+    --orange: #f0a33a;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, "Segoe UI", sans-serif;
+    background: linear-gradient(180deg, #090d12, #101720);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  header {
+    padding: 60px 7vw 42px;
+    background:
+      radial-gradient(circle at 75% 15%, rgba(214,67,67,.25), transparent 35%),
+      linear-gradient(135deg, #121923, #080b10);
+    border-bottom: 1px solid var(--line);
+  }
+
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 5vw 80px;
+  }
+
+  h1 {
+    font-size: 46px;
+    margin: 0 0 10px;
+  }
+
+  h2 {
+    font-size: 30px;
+    margin: 44px 0 18px;
+    border-left: 6px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  h3 {
+    font-size: 22px;
+    margin: 26px 0 12px;
+  }
+
+  p {
+    margin: 8px 0 14px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 20px;
+    max-width: 920px;
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .badge {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.08);
+    color: #eaf2ff;
+    font-size: 14px;
+  }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel), #111720);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    margin: 18px 0;
+    box-shadow: 0 14px 38px rgba(0,0,0,.25);
+  }
+
+  .grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 850px) {
+    .two, .three {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 34px;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    background: #111720;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  th, td {
+    border: 1px solid #303a4d;
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #222c3c;
+    color: #fff;
+  }
+
+  td {
+    color: #e3ebf7;
+  }
+
+  ul, ol {
+    padding-left: 24px;
+  }
+
+  li {
+    margin: 6px 0;
+  }
+
+  .callout {
+    border-left: 5px solid var(--orange);
+    background: rgba(240,163,58,.09);
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin: 18px 0;
+  }
+
+  .success {
+    border-left-color: var(--green);
+    background: rgba(117,220,147,.09);
+  }
+
+  .danger {
+    border-left-color: var(--accent);
+    background: rgba(214,67,67,.09);
+  }
+
+  pre {
+    background: #080c12;
+    border: 1px solid #2e394c;
+    border-radius: 14px;
+    padding: 18px;
+    overflow-x: auto;
+    color: #dce8f6;
+    font-size: 15px;
+  }
+
+  .me {
+    color: var(--blue);
+    font-weight: bold;
+  }
+
+  .sitrarasan {
+    color: var(--green);
+    font-weight: bold;
+  }
+
+  .footer {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 40px;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  .sample-cell {
+    min-width: 320px;
+  }
+
+  .sample-panel {
+    display: grid;
+    gap: 12px;
+  }
+
+  .sample-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .sample-button {
+    appearance: none;
+    border: 1px solid rgba(86,166,255,.45);
+    background: linear-gradient(180deg, rgba(86,166,255,.2), rgba(86,166,255,.08));
+    color: var(--text);
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .sample-button:hover {
+    border-color: rgba(86,166,255,.75);
+    background: linear-gradient(180deg, rgba(86,166,255,.26), rgba(86,166,255,.12));
+  }
+
+  .task-open-button {
+    appearance: none;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .task-open-button:hover {
+    color: #9bc7ff;
+    text-decoration: underline;
+  }
+
+  .sample-preview {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid #2f3c50;
+    background: #0c1219;
+    box-shadow: 0 12px 28px rgba(0,0,0,.22);
+  }
+
+  .sample-name {
+    margin: 0;
+    color: #d8e2f3;
+    font-size: 14px;
+  }
+
+  .sample-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background: rgba(5, 8, 13, .88);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+  }
+
+  .sample-modal.is-visible {
+    display: flex;
+  }
+
+  .sample-modal-dialog {
+    width: min(96vw, 1300px);
+    height: min(92vh, 980px);
+    max-height: 92vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 16px;
+    padding: 18px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #141b25, #0d131a);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    overflow: hidden;
+  }
+
+  .sample-modal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .sample-modal-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sample-control {
+    appearance: none;
+    min-width: 44px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: #1b2430;
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .sample-control:hover {
+    background: #253243;
+  }
+
+  .sample-zoom-label {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+    min-width: 64px;
+    text-align: center;
+  }
+
+  .sample-modal-stage {
+    overflow: auto;
+    border-radius: 16px;
+    border: 1px solid #273345;
+    background:
+      linear-gradient(45deg, rgba(255,255,255,.03) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.03) 75%),
+      linear-gradient(45deg, rgba(255,255,255,.03) 25%, transparent 25%, transparent 75%, rgba(255,255,255,.03) 75%),
+      #0b1017;
+    background-position: 0 0, 14px 14px, 0 0;
+    background-size: 28px 28px;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 18px;
+  }
+
+  .sample-modal-stage.is-draggable {
+    cursor: grab;
+  }
+
+  .sample-modal-stage.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .sample-modal-image {
+    display: block;
+    max-width: none;
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+    transition: width .12s ease-out;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.38);
+  }
+
+  .sample-modal-caption {
+    margin: 0;
+    color: #d8e2f3;
+    font-size: 14px;
+  }
+
+  @media (max-width: 850px) {
+    .sample-modal {
+      padding: 14px;
+    }
+
+    .sample-modal-dialog {
+      width: 100%;
+      height: min(95vh, 95vh);
+      max-height: 95vh;
+      padding: 14px;
+    }
+
+    .sample-modal-stage {
+      min-height: 0;
+      padding: 12px;
+    }
+  }
+
+  .sample-error {
+    display: none;
+    margin: 0;
+    color: #ffb3b3;
+    font-size: 14px;
+  }
+
+  .sample-error.is-visible {
+    display: block;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Dead City Escape</h1>
+  <div class="subtitle">Two-Person Work Responsibility Document — Written from the owner’s side for direct project communication with Sitrarasan.</div>
+  <div class="badge-row">
+    <span class="badge">Owner: Me</span>
+    <span class="badge">3D Artist: Sitrarasan</span>
+    <span class="badge">Unity 6</span>
+    <span class="badge">2-Player Co-op</span>
+    <span class="badge">Zombie Survival Shooter</span>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <h2>1. Project Introduction</h2>
+  <div class="card">
+    <p>I am developing a game called <strong>Dead City Escape</strong>.</p>
+    <p>This game is a <strong>2-player co-op zombie survival shooter</strong> built in <strong>Unity</strong>.</p>
+    <p>For this project, I will handle the game development, game design, level design, multiplayer, zombie AI, UI, sound integration, testing, and publishing.</p>
+    <p><strong>Sitrarasan, you will handle all 3D model and 3D art-related work for this game.</strong></p>
+  </div>
+
+  <div class="callout success">
+    <strong>Main goal:</strong> We will first create a small 10-minute playable demo. After that works well, we will expand the game area by area.
+  </div>
+</section>
+
+<section>
+  <h2>2. Our Team Structure</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Person</th>
+        <th>Role</th>
+        <th>Work Responsibility</th>
+      </tr>
+      <tr>
+        <td><span class="me">Me</span></td>
+        <td>Owner / Game Developer / Game Designer / Level Designer</td>
+        <td>I will manage the full project, build the game in Unity, create the gameplay systems, create the level graybox, handle multiplayer, zombie AI, UI, sound, testing, and publishing.</td>
+      </tr>
+      <tr>
+        <td><span class="sitrarasan">Sitrarasan</span></td>
+        <td>3D Artist</td>
+        <td>You will design and create all 3D models, environment assets, characters, zombies, weapons, props, textures, and Unity-ready art assets.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>3. My Work in This Project</h2>
+  <div class="card">
+    <p>I will take care of all game-side work except 3D modeling.</p>
+    <table>
+      <tr>
+        <th>Area</th>
+        <th>My Responsibility</th>
+      </tr>
+      <tr>
+        <td>Game Direction</td>
+        <td>I will decide the game vision, story direction, gameplay style, horror mood, quality target, and production priorities.</td>
+      </tr>
+      <tr>
+        <td>Production Management</td>
+        <td>I will create the task list, assign 3D asset work, review your models, approve or ask for changes, and manage the timeline.</td>
+      </tr>
+      <tr>
+        <td>Game Design</td>
+        <td>I will design the weapons, zombies, objectives, co-op rules, player health, revive system, difficulty, and game flow.</td>
+      </tr>
+      <tr>
+        <td>Level Design</td>
+        <td>I will create the graybox level layout, player path, combat flow, zombie spawn points, objective locations, and co-op movement spaces.</td>
+      </tr>
+      <tr>
+        <td>Unity Development</td>
+        <td>I will build player movement, camera, shooting, reload, health, inventory, interaction, objectives, pickups, and gameplay logic.</td>
+      </tr>
+      <tr>
+        <td>Multiplayer</td>
+        <td>I will build the 2-player co-op system, lobby, player spawning, network sync, zombie sync, damage sync, and revive sync.</td>
+      </tr>
+      <tr>
+        <td>Zombie AI</td>
+        <td>I will create zombie detection, chase, attack, death, wave spawning, and horde events.</td>
+      </tr>
+      <tr>
+        <td>UI / UX</td>
+        <td>I will create the HUD, health UI, ammo UI, objective UI, revive UI, lobby UI, and interaction prompts.</td>
+      </tr>
+      <tr>
+        <td>Sound and VFX Integration</td>
+        <td>I will integrate gun sounds, zombie sounds, rain, ambience, blood effects, muzzle flash, fire, sparks, and other effects inside Unity.</td>
+      </tr>
+      <tr>
+        <td>Testing and Publishing</td>
+        <td>I will test bugs, fix gameplay problems, optimize performance, create builds, and prepare the game for release.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>4. Sitrarasan, Your Work in This Project</h2>
+  <div class="card">
+    <p>Sitrarasan, your main responsibility is to create all the 3D art assets needed for <strong>Dead City Escape</strong>.</p>
+    <p>Your models should be suitable for a real-time Unity game. They should be optimized, properly named, correctly scaled, and ready to import into Unity.</p>
+
+    <table>
+      <tr>
+        <th>Area</th>
+        <th>Your Responsibility</th>
+        <th>Sample Reference</th>
+      </tr>
+      <tr>
+        <td>Environment Models</td>
+        <td>You will create the 3D environment assets for the alley, main street, gun shop, hospital, parking garage, generator room, and final gate area.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="82726652-5e95-4488-a08d-0fe6ccc023a4.png" data-title="Environment model sample board" data-alt="Environment model sample reference">See Sample</button>
+            <p class="sample-error" id="sampleError">Sample image file not found.</p>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Character Models</td>
+        <td>You will create Survivor 01 and Survivor 02 character models.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <div class="sample-actions">
+              <button class="sample-button sample-open-button" type="button" data-image="boy.png" data-title="Survivor 01 sample board" data-alt="Survivor 01 character reference">Boy Sample</button>
+              <button class="sample-button sample-open-button" type="button" data-image="Girl.png" data-title="Survivor 02 sample board" data-alt="Survivor 02 character reference">Girl Sample</button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Zombie Models</td>
+        <td>You will create Walker Zombie, Runner Zombie, Hospital Zombie, Exploder Zombie, and Tank Zombie models.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="zombie.png" data-title="Zombie sample board" data-alt="Zombie character reference">Zombie Sample</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Weapon Models</td>
+        <td>You will create pistol, shotgun, assault rifle, grenade, and pickup versions of weapons.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="gun.png" data-title="Weapon sample board" data-alt="Weapon reference">Gun Sample</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Props</td>
+        <td>You will create dumpsters, trash bags, doors, signs, barricades, cars, ammo boxes, hospital props, generator props, and street props.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="Props.png" data-title="Props sample board" data-alt="Props reference">Props Sample</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Hero Assets</td>
+        <td>You will create important large assets like the generator, final escape gate, burned police car, destroyed bus, crashed helicopter, and military barricades.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="Hero Assets.png" data-title="Hero assets sample board" data-alt="Hero assets reference">Hero Assets Sample</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Materials and Textures</td>
+        <td>You will create wet asphalt, dirty brick, rusted metal, blood, zombie skin, hospital tile, concrete, fabric, and other materials.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <button class="sample-button sample-open-button" type="button" data-image="Materials and Textures.png" data-title="Materials and textures sample board" data-alt="Materials and textures reference">Materials Sample</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Unity-Ready Export</td>
+        <td>You will export FBX files, textures, LODs, collision meshes, and preview images with correct scale and naming.</td>
+        <td class="sample-cell"></td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>5. First Demo Target</h2>
+  <div class="card">
+    <p>Our first target is not the full game. Our first target is a <strong>10-minute playable demo</strong>.</p>
+    <p>The demo should include:</p>
+    <ul>
+      <li>Start Alley area</li>
+      <li>Main Street area</li>
+      <li>2-player co-op movement</li>
+      <li>Pistol shooting</li>
+      <li>Basic zombie AI</li>
+      <li>One survivor model</li>
+      <li>One zombie model</li>
+      <li>Basic environment assets</li>
+      <li>One small objective: reach the exit gate</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>6. What I Will Start First</h2>
+  <div class="card">
+    <ol>
+      <li>I will create the Unity project.</li>
+      <li>I will create the folder structure.</li>
+      <li>I will create basic player movement.</li>
+      <li>I will create the third-person camera.</li>
+      <li>I will create the shooting system.</li>
+      <li>I will create health and damage.</li>
+      <li>I will create basic zombie AI.</li>
+      <li>I will create the 2-player multiplayer test.</li>
+      <li>I will create the graybox alley and main street.</li>
+      <li>I will send you the required asset list one by one.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <h2>7. Sitrarasan, What You Should Start First</h2>
+  <div class="card">
+    <ol>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create Survivor 01 basic model blockout.png" data-title="Survivor 01 basic model blockout" data-alt="Survivor 01 basic model blockout reference">Create Survivor 01 basic model blockout.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create Walker Zombie basic model blockout.png" data-title="Walker Zombie basic model blockout" data-alt="Walker Zombie basic model blockout reference">Create Walker Zombie basic model blockout.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create alley wall modular kit.png" data-title="Alley wall modular kit" data-alt="Alley wall modular kit reference">Create alley wall modular kit.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create wet alley floor or wet asphalt material.png" data-title="Wet alley floor or wet asphalt material" data-alt="Wet alley floor or wet asphalt material reference">Create wet alley floor or wet asphalt material.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create dumpster prop.png" data-title="Dumpster prop" data-alt="Dumpster prop reference">Create dumpster prop.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create trash bag prop set.png" data-title="Trash bag prop set" data-alt="Trash bag prop set reference">Create trash bag prop set.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create broken street lamp.png" data-title="Broken street lamp" data-alt="Broken street lamp reference">Create broken street lamp.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create pistol model.png" data-title="Pistol model" data-alt="Pistol model reference">Create pistol model.</button></li>
+      <li><button class="task-open-button sample-open-button" type="button" data-image="Create burned police car blockout.png" data-title="Burned police car blockout" data-alt="Burned police car blockout reference">Create burned police car blockout.</button></li>
+      <li>Export test FBX files so I can check the scale inside Unity.</li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <strong>Important:</strong> Please send blockout screenshots first before making final detailed models. I will check the shape, scale, and gameplay use before you continue to final modeling.
+  </div>
+</section>
+
+<section>
+  <h2>8. Work Process Between Us</h2>
+  <div class="card">
+    <p>This is how we will work on every 3D asset:</p>
+<pre>I assign asset task
+  ↓
+You create simple blockout
+  ↓
+You send screenshot / preview
+  ↓
+I review and approve or give changes
+  ↓
+You create final model
+  ↓
+You create textures and materials
+  ↓
+You export FBX and textures
+  ↓
+I import into Unity and test
+  ↓
+Asset is approved or sent for revision</pre>
+  </div>
+</section>
+
+<section>
+  <h2>9. 3D Asset Quality Rules</h2>
+  <div class="card">
+    <ul>
+      <li>All models should match the horror survival style of <strong>Dead City Escape</strong>.</li>
+      <li>The world should look dirty, wet, damaged, abandoned, and recently collapsed.</li>
+      <li>Do not make cartoon-style models.</li>
+      <li>Do not make clean and empty-looking assets.</li>
+      <li>Use realistic proportions.</li>
+      <li>Make assets optimized for real-time gameplay.</li>
+      <li>Use correct scale: <strong>1 Unity unit = 1 meter</strong>.</li>
+      <li>Keep pivots correct.</li>
+      <li>Use proper naming.</li>
+      <li>Give FBX, textures, and preview images for every final asset.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>10. File Naming Rules</h2>
+  <div class="card">
+    <p>Please follow this naming style for the assets:</p>
+<pre>Meshes:
+SM_AlleyWall_4m_01
+SM_Dumpster_01
+SM_Pistol_01
+SK_SurvivorPolice_01
+SK_ZombieWalker_01
+
+Materials:
+MAT_WetAsphalt_01
+MAT_DirtyBrick_01
+MAT_ZombieSkin_01
+
+Textures:
+T_ZombieWalker_Body_A
+T_ZombieWalker_Body_N
+T_ZombieWalker_Body_R
+T_ZombieWalker_Body_M
+T_ZombieWalker_Body_AO
+
+Collision:
+COL_Dumpster_01
+UCX_Generator_01</pre>
+  </div>
+</section>
+
+<section>
+  <h2>11. First 30-Day Plan</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>Week</th>
+        <th>My Work</th>
+        <th>Sitrarasan, Your Work</th>
+      </tr>
+      <tr>
+        <td>Week 1</td>
+        <td>I will set up Unity, folder structure, source control, player movement, camera, and graybox alley.</td>
+        <td>You will create Survivor 01 blockout, Walker Zombie blockout, and alley wall blockout.</td>
+      </tr>
+      <tr>
+        <td>Week 2</td>
+        <td>I will create shooting, reload, health, damage, and basic zombie AI.</td>
+        <td>You will create pistol model, dumpster prop, trash bags, and wet asphalt material.</td>
+      </tr>
+      <tr>
+        <td>Week 3</td>
+        <td>I will create 2-player multiplayer movement, zombie sync test, and main street graybox.</td>
+        <td>You will create burned police car blockout, broken lamp, and city street props.</td>
+      </tr>
+      <tr>
+        <td>Week 4</td>
+        <td>I will assemble the playable demo, test it, fix bugs, and integrate your assets.</td>
+        <td>You will fix art feedback, export Unity-ready assets, and create simple LODs/collisions where needed.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>12. Final Summary</h2>
+  <div class="card">
+    <p>I will handle the full game production, design, programming, Unity integration, multiplayer, AI, UI, sound, testing, and release.</p>
+    <p>Sitrarasan, you will handle all 3D models, characters, zombies, weapons, props, environments, textures, and Unity-ready art exports.</p>
+    <p>Our first goal is a small playable demo. Once the demo works, we will expand the game step by step.</p>
+  </div>
+</section>
+
+<div class="footer">
+  Dead City Escape — Owner to Sitrarasan Work Responsibility Document
+</div>
+
+<div class="sample-modal" id="sampleModal" aria-hidden="true">
+  <div class="sample-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="sampleModalTitle">
+    <div class="sample-modal-toolbar">
+      <p class="sample-name" id="sampleModalTitle">Dead City Escape environment model sample board</p>
+      <div class="sample-modal-actions">
+        <button class="sample-control" id="sampleZoomOutButton" type="button" aria-label="Zoom out">-</button>
+        <p class="sample-zoom-label" id="sampleZoomLabel">100%</p>
+        <button class="sample-control" id="sampleZoomInButton" type="button" aria-label="Zoom in">+</button>
+        <button class="sample-control" id="sampleCloseButton" type="button">Close</button>
+      </div>
+    </div>
+    <div class="sample-modal-stage" id="sampleStage">
+      <img class="sample-modal-image" id="sampleModalImage" src="82726652-5e95-4488-a08d-0fe6ccc023a4.png" alt="Environment model sample reference" />
+    </div>
+    <p class="sample-modal-caption">Use the zoom buttons to inspect the reference board in detail.</p>
+  </div>
+</div>
+
+</main>
+<script>
+  (function () {
+    var openButtons = document.querySelectorAll('.sample-open-button');
+    var closeButton = document.getElementById('sampleCloseButton');
+    var modal = document.getElementById('sampleModal');
+    var stage = document.getElementById('sampleStage');
+    var preview = document.getElementById('sampleModalImage');
+    var modalTitle = document.getElementById('sampleModalTitle');
+    var error = document.getElementById('sampleError');
+    var zoomInButton = document.getElementById('sampleZoomInButton');
+    var zoomOutButton = document.getElementById('sampleZoomOutButton');
+    var zoomLabel = document.getElementById('sampleZoomLabel');
+    var activeButton = null;
+    var scale = 1;
+    var minScale = 0.5;
+    var maxScale = 3;
+    var zoomStep = 0.25;
+    var isDragging = false;
+    var dragStartX = 0;
+    var dragStartY = 0;
+    var startScrollLeft = 0;
+    var startScrollTop = 0;
+
+    if (!openButtons.length || !closeButton || !modal || !stage || !preview || !modalTitle || !error || !zoomInButton || !zoomOutButton || !zoomLabel) {
+      return;
+    }
+
+    function updateZoom() {
+      if (preview.naturalWidth) {
+        preview.style.width = (preview.naturalWidth * scale) + 'px';
+      } else {
+        preview.style.width = 'auto';
+      }
+      zoomLabel.textContent = Math.round(scale * 100) + '%';
+      stage.classList.toggle('is-draggable', scale > 1);
+      if (scale <= 1) {
+        stage.classList.remove('is-dragging');
+      }
+    }
+
+    function openModal() {
+      scale = 1;
+      updateZoom();
+      modal.classList.add('is-visible');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      stage.scrollTop = 0;
+      stage.scrollLeft = 0;
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-visible');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      isDragging = false;
+      stage.classList.remove('is-dragging');
+    }
+
+    function startDragging(event) {
+      if (scale <= 1 || event.button !== 0) {
+        return;
+      }
+
+      isDragging = true;
+      dragStartX = event.clientX;
+      dragStartY = event.clientY;
+      startScrollLeft = stage.scrollLeft;
+      startScrollTop = stage.scrollTop;
+      stage.classList.add('is-dragging');
+      event.preventDefault();
+    }
+
+    function moveDragging(event) {
+      if (!isDragging) {
+        return;
+      }
+
+      stage.scrollLeft = startScrollLeft - (event.clientX - dragStartX);
+      stage.scrollTop = startScrollTop - (event.clientY - dragStartY);
+    }
+
+    function stopDragging() {
+      if (!isDragging) {
+        return;
+      }
+
+      isDragging = false;
+      stage.classList.remove('is-dragging');
+    }
+
+    openButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        activeButton = button;
+        preview.src = button.getAttribute('data-image');
+        preview.alt = button.getAttribute('data-alt') || 'Sample reference';
+        modalTitle.textContent = button.getAttribute('data-title') || 'Sample board';
+        error.classList.remove('is-visible');
+        openModal();
+      });
+    });
+
+    closeButton.addEventListener('click', function () {
+      closeModal();
+    });
+
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    zoomInButton.addEventListener('click', function () {
+      scale = Math.min(maxScale, scale + zoomStep);
+      updateZoom();
+    });
+
+    zoomOutButton.addEventListener('click', function () {
+      scale = Math.max(minScale, scale - zoomStep);
+      updateZoom();
+    });
+
+    stage.addEventListener('mousedown', startDragging);
+    window.addEventListener('mousemove', moveDragging);
+    window.addEventListener('mouseup', stopDragging);
+    stage.addEventListener('mouseleave', stopDragging);
+
+    document.addEventListener('keydown', function (event) {
+      if (modal.classList.contains('is-visible') && event.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    preview.addEventListener('error', function () {
+      error.classList.add('is-visible');
+      if (modal.classList.contains('is-visible')) {
+        closeModal();
+      }
+    });
+
+    preview.addEventListener('load', function () {
+      error.classList.remove('is-visible');
+      updateZoom();
+    });
+
+    updateZoom();
+  }());
+</script>
+</body>
+</html>

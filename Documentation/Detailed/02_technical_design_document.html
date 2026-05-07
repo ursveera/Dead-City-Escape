@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>02. Technical Design Document</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f5f5f5;color:#222;line-height:1.6}header{background:#151515;color:#fff;padding:32px;border-bottom:4px solid #b00020}main{max-width:1100px;margin:auto;background:#fff;padding:32px}h1,h2,h3{color:#b00020}table{width:100%;border-collapse:collapse;margin:16px 0}td,th{border:1px solid #ccc;padding:10px;text-align:left;vertical-align:top}th{background:#eee}code,pre{background:#eee;padding:10px;border-radius:8px;display:block;white-space:pre-wrap}.note{background:#fff3cd;border-left:5px solid #f0ad4e;padding:12px;margin:16px 0}.back{margin-top:30px}</style></head><body><header><h1>02. Technical Design Document</h1><p>Dead City Escape — Production Document</p></header><main>
+<h2>Recommended Technology</h2><table><tr><th>Area</th><th>Recommendation</th></tr><tr><td>Engine</td><td>Unity 6 or current stable LTS</td></tr><tr><td>Render Pipeline</td><td>URP for performance, HDRP if targeting high-end PC only</td></tr><tr><td>Networking</td><td>Photon Fusion, Mirror, or Unity Netcode for GameObjects</td></tr><tr><td>AI</td><td>Unity NavMesh + custom state machine</td></tr><tr><td>Source Control</td><td>Git with LFS or Unity Version Control</td></tr><tr><td>Build Target</td><td>Windows PC first</td></tr></table>
+<h2>Project Structure</h2><pre>Assets/
+  Art/
+  Audio/
+  Animations/
+  Materials/
+  Prefabs/
+  Scenes/
+  Scripts/
+  UI/
+  Multiplayer/
+  ScriptableObjects/
+  VFX/</pre>
+<h2>Core Code Modules</h2><ul><li>PlayerController</li><li>PlayerHealth</li><li>WeaponSystem</li><li>InventorySystem</li><li>InteractableSystem</li><li>ZombieAI</li><li>ZombieSpawner</li><li>ObjectiveManager</li><li>GameStateManager</li><li>NetworkSessionManager</li><li>ReviveSystem</li><li>UIManager</li></ul>
+<h2>Networking Requirements</h2><table><tr><th>Feature</th><th>Network Sync</th></tr><tr><td>Player movement</td><td>Position, rotation, animation state</td></tr><tr><td>Shooting</td><td>Shot request, hit validation, ammo state</td></tr><tr><td>Zombies</td><td>Spawn, target, health, death, animation</td></tr><tr><td>Objectives</td><td>Key items, switches, generator status, final gate</td></tr><tr><td>Revive</td><td>Downed state, revive progress, recovery</td></tr></table>
+<h2>Performance Targets</h2><ul><li>60 FPS target on mid-range PC.</li><li>Use LODs for zombies, vehicles, hero props.</li><li>Use occlusion culling in city, hospital, and garage.</li><li>Limit active zombies with spawn manager and pooling.</li><li>Use object pooling for bullets, blood VFX, impact VFX, zombie spawns.</li></ul>
+<p class="back"><a href="index.html">Back to index</a></p></main></body></html>

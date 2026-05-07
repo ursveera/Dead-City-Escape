@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dead City Escape — Documentation Overview</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #151b24;
+    --panel2: #1c2333;
+    --text: #eef4ff;
+    --muted: #aab5c5;
+    --line: #344155;
+    --accent: #d64343;
+    --blue: #56a6ff;
+    --green: #75dc93;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, "Segoe UI", sans-serif;
+    background: linear-gradient(160deg, #090d12 0%, #101720 100%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 52px 7vw 38px;
+    background:
+      radial-gradient(circle at 70% 20%, rgba(214,67,67,.22), transparent 38%),
+      linear-gradient(135deg, #121923, #080b10);
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: 48px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 5vw;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 36px;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 44px 36px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .card.short::before { background: linear-gradient(90deg, var(--accent), #ff7b00); }
+  .card.detail::before { background: linear-gradient(90deg, var(--blue), var(--green)); }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 48px rgba(0,0,0,.55);
+    border-color: #4a5a75;
+  }
+
+  .card-icon {
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .card h2 {
+    font-size: 28px;
+    color: var(--text);
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .card.short h2 { color: #ff6b4a; }
+  .card.detail h2 { color: var(--blue); }
+
+  .card p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .card-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 13px 30px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: .5px;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+
+  .card-btn:hover { opacity: .85; transform: scale(1.04); }
+
+  .card.short .card-btn {
+    background: linear-gradient(135deg, var(--accent), #ff7b00);
+    color: #fff;
+  }
+
+  .card.detail .card-btn {
+    background: linear-gradient(135deg, var(--blue), var(--green));
+    color: #08111a;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.07);
+    color: var(--muted);
+  }
+
+  footer {
+    text-align: center;
+    padding: 22px;
+    font-size: 12px;
+    color: #4a5a75;
+    border-top: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dead City Escape</h1>
+  <p>2-Player Co-op Zombie Survival Shooter &nbsp;·&nbsp; Unity &nbsp;·&nbsp; PC First</p>
+</header>
+
+<main>
+  <div class="cards">
+
+    <!-- Short Overview Card -->
+    <div class="card short">
+      <span class="badge">Quick Read</span>
+      <div class="card-icon">⚡</div>
+      <h2>Short Overview</h2>
+      <p>
+        A concise, role-based responsibility document covering the full project
+        scope — from ownership structure to team assignments — all in one page.
+        Ideal for a fast brief or onboarding summary.
+      </p>
+      <a
+        class="card-btn"
+        href="DCE_Role_Base/dead_city_escape_owner_to_sitrarasan_single_doc.html"
+      >
+        View Short Overview →
+      </a>
+    </div>
+
+    <!-- Detail Overview Card -->
+    <div class="card detail">
+      <span class="badge">Full Pack</span>
+      <div class="card-icon">📚</div>
+      <h2>Detail Overview</h2>
+      <p>
+        The complete end-to-end production documentation pack — 12 documents
+        covering Game Design, Technical Design, Art Bible, Level Design,
+        Developer Tasks, Animation, UI/UX, Audio, QA, Asset List, and more.
+      </p>
+      <a
+        class="card-btn"
+        href="Detailed/index.html"
+      >
+        View Detail Overview →
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Dead City Escape Documentation &nbsp;·&nbsp; Version 1.0
+</footer>
+
+</body>
+</html>
