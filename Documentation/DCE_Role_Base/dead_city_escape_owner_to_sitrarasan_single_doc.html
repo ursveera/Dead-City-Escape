@@ -213,6 +213,17 @@
     gap: 10px;
   }
 
+  .sample-reference-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #d8e2f3;
+    font-size: 14px;
+  }
+
+  .sample-reference-list li {
+    margin: 4px 0;
+  }
+
   .sample-button {
     appearance: none;
     border: 1px solid rgba(86,166,255,.45);
@@ -325,6 +336,14 @@
     font-size: 14px;
     margin: 0;
     min-width: 64px;
+    text-align: center;
+  }
+
+  .sample-gallery-label {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+    min-width: 72px;
     text-align: center;
   }
 
@@ -532,6 +551,26 @@
         </td>
       </tr>
       <tr>
+        <td>Start Alley</td>
+        <td>You will use these Start Alley references for mood, layout direction, and surface/material quality when building the first playable area.</td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <ul class="sample-reference-list">
+              <li>Start Alley reference image 01</li>
+              <li>Start Alley reference image 02</li>
+            </ul>
+            <button
+              class="sample-button sample-open-button"
+              type="button"
+              data-gallery-images="images/Start Alley.png|images/start alley 1.png"
+              data-gallery-titles="Start Alley reference 01|Start Alley reference 02"
+              data-gallery-alts="Start Alley reference image 01|Start Alley reference image 02"
+              data-gallery-caption="Browse the Start Alley reference images for this area."
+            >Start Alley References</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
         <td>Character Models</td>
         <td>You will create Survivor 01 and Survivor 02 character models.</td>
         <td class="sample-cell">
@@ -591,7 +630,28 @@
       <tr>
         <td>Unity-Ready Export</td>
         <td>You will export FBX files, textures, LODs, collision meshes, and preview images with correct scale and naming.</td>
-        <td class="sample-cell"></td>
+        <td class="sample-cell">
+          <div class="sample-panel">
+            <ul class="sample-reference-list">
+              <li>Environment sample board</li>
+              <li>Survivor 01 reference</li>
+              <li>Survivor 02 reference</li>
+              <li>Zombie reference</li>
+              <li>Weapon reference</li>
+              <li>Props reference</li>
+              <li>Hero assets reference</li>
+              <li>Materials and textures reference</li>
+            </ul>
+            <button
+              class="sample-button sample-open-button"
+              type="button"
+              data-gallery-images="82726652-5e95-4488-a08d-0fe6ccc023a4.png|boy.png|Girl.png|zombie.png|gun.png|Props.png|Hero Assets.png|Materials and Textures.png"
+              data-gallery-titles="Environment model sample board|Survivor 01 sample board|Survivor 02 sample board|Zombie sample board|Weapon sample board|Props sample board|Hero assets sample board|Materials and textures sample board"
+              data-gallery-alts="Environment model sample reference|Survivor 01 character reference|Survivor 02 character reference|Zombie character reference|Weapon reference|Props reference|Hero assets reference|Materials and textures reference"
+              data-gallery-caption="Browse all primary reference images prepared for export review."
+            >Browse All References</button>
+          </div>
+        </td>
       </tr>
     </table>
   </div>
@@ -778,6 +838,9 @@ UCX_Generator_01</pre>
     <div class="sample-modal-toolbar">
       <p class="sample-name" id="sampleModalTitle">Dead City Escape environment model sample board</p>
       <div class="sample-modal-actions">
+        <button class="sample-control" id="samplePrevButton" type="button">Prev</button>
+        <p class="sample-gallery-label" id="sampleGalleryLabel">1 / 1</p>
+        <button class="sample-control" id="sampleNextButton" type="button">Next</button>
         <button class="sample-control" id="sampleZoomOutButton" type="button" aria-label="Zoom out">-</button>
         <p class="sample-zoom-label" id="sampleZoomLabel">100%</p>
         <button class="sample-control" id="sampleZoomInButton" type="button" aria-label="Zoom in">+</button>
@@ -800,11 +863,16 @@ UCX_Generator_01</pre>
     var stage = document.getElementById('sampleStage');
     var preview = document.getElementById('sampleModalImage');
     var modalTitle = document.getElementById('sampleModalTitle');
+    var modalCaption = document.querySelector('.sample-modal-caption');
     var error = document.getElementById('sampleError');
+    var prevButton = document.getElementById('samplePrevButton');
+    var nextButton = document.getElementById('sampleNextButton');
+    var galleryLabel = document.getElementById('sampleGalleryLabel');
     var zoomInButton = document.getElementById('sampleZoomInButton');
     var zoomOutButton = document.getElementById('sampleZoomOutButton');
     var zoomLabel = document.getElementById('sampleZoomLabel');
-    var activeButton = null;
+    var galleryItems = [];
+    var galleryIndex = 0;
     var scale = 1;
     var minScale = 0.5;
     var maxScale = 3;
@@ -815,8 +883,53 @@ UCX_Generator_01</pre>
     var startScrollLeft = 0;
     var startScrollTop = 0;
 
-    if (!openButtons.length || !closeButton || !modal || !stage || !preview || !modalTitle || !error || !zoomInButton || !zoomOutButton || !zoomLabel) {
+    if (!openButtons.length || !closeButton || !modal || !stage || !preview || !modalTitle || !modalCaption || !error || !prevButton || !nextButton || !galleryLabel || !zoomInButton || !zoomOutButton || !zoomLabel) {
       return;
+    }
+
+    function parseGalleryItems(button) {
+      var galleryImages = button.getAttribute('data-gallery-images');
+      var galleryTitles = button.getAttribute('data-gallery-titles');
+      var galleryAlts = button.getAttribute('data-gallery-alts');
+
+      if (!galleryImages) {
+        return [{
+          image: button.getAttribute('data-image'),
+          title: button.getAttribute('data-title') || 'Sample board',
+          alt: button.getAttribute('data-alt') || 'Sample reference'
+        }];
+      }
+
+      var images = galleryImages.split('|');
+      var titles = galleryTitles ? galleryTitles.split('|') : [];
+      var alts = galleryAlts ? galleryAlts.split('|') : [];
+
+      return images.map(function (image, index) {
+        return {
+          image: image,
+          title: titles[index] || ('Reference ' + (index + 1)),
+          alt: alts[index] || 'Sample reference'
+        };
+      });
+    }
+
+    function updateGalleryButtons() {
+      var hasMultipleItems = galleryItems.length > 1;
+      prevButton.disabled = !hasMultipleItems;
+      nextButton.disabled = !hasMultipleItems;
+      galleryLabel.textContent = galleryItems.length ? ((galleryIndex + 1) + ' / ' + galleryItems.length) : '0 / 0';
+    }
+
+    function showGalleryItem(index) {
+      galleryIndex = index;
+      preview.src = galleryItems[galleryIndex].image;
+      preview.alt = galleryItems[galleryIndex].alt;
+      modalTitle.textContent = galleryItems[galleryIndex].title;
+      updateGalleryButtons();
+      scale = 1;
+      updateZoom();
+      stage.scrollTop = 0;
+      stage.scrollLeft = 0;
     }
 
     function updateZoom() {
@@ -884,11 +997,11 @@ UCX_Generator_01</pre>
 
     openButtons.forEach(function (button) {
       button.addEventListener('click', function () {
-        activeButton = button;
-        preview.src = button.getAttribute('data-image');
-        preview.alt = button.getAttribute('data-alt') || 'Sample reference';
-        modalTitle.textContent = button.getAttribute('data-title') || 'Sample board';
+        galleryItems = parseGalleryItems(button);
+        galleryIndex = 0;
+        modalCaption.textContent = button.getAttribute('data-gallery-caption') || 'Use the zoom buttons to inspect the reference board in detail.';
         error.classList.remove('is-visible');
+        showGalleryItem(galleryIndex);
         openModal();
       });
     });
@@ -913,6 +1026,22 @@ UCX_Generator_01</pre>
       updateZoom();
     });
 
+    prevButton.addEventListener('click', function () {
+      if (galleryItems.length <= 1) {
+        return;
+      }
+
+      showGalleryItem((galleryIndex - 1 + galleryItems.length) % galleryItems.length);
+    });
+
+    nextButton.addEventListener('click', function () {
+      if (galleryItems.length <= 1) {
+        return;
+      }
+
+      showGalleryItem((galleryIndex + 1) % galleryItems.length);
+    });
+
     stage.addEventListener('mousedown', startDragging);
     window.addEventListener('mousemove', moveDragging);
     window.addEventListener('mouseup', stopDragging);
@@ -921,6 +1050,19 @@ UCX_Generator_01</pre>
     document.addEventListener('keydown', function (event) {
       if (modal.classList.contains('is-visible') && event.key === 'Escape') {
         closeModal();
+        return;
+      }
+
+      if (!modal.classList.contains('is-visible') || galleryItems.length <= 1) {
+        return;
+      }
+
+      if (event.key === 'ArrowLeft') {
+        showGalleryItem((galleryIndex - 1 + galleryItems.length) % galleryItems.length);
+      }
+
+      if (event.key === 'ArrowRight') {
+        showGalleryItem((galleryIndex + 1) % galleryItems.length);
       }
     });
 
@@ -934,6 +1076,7 @@ UCX_Generator_01</pre>
     preview.addEventListener('load', function () {
       error.classList.remove('is-visible');
       updateZoom();
+      updateGalleryButtons();
     });
 
     updateZoom();
